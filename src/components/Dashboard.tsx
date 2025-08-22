@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CardDetail from './CardDetail';
 import { 
   Home, 
   List, 
@@ -22,6 +23,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const [selectedMonth, setSelectedMonth] = useState('August');
   const [activeTab, setActiveTab] = useState('open');
   const [showBalance, setShowBalance] = useState(true);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -62,6 +64,18 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
       color: 'bg-gradient-to-r from-red-500 to-orange-500'
     }
   ];
+
+  const handleCardClick = (card: any) => {
+    setSelectedCard(card);
+  };
+
+  const handleBackFromCard = () => {
+    setSelectedCard(null);
+  };
+
+  if (selectedCard) {
+    return <CardDetail card={selectedCard} onBack={handleBackFromCard} />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -174,7 +188,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
           {/* Credit Cards List */}
           <div className="p-4 space-y-4">
             {creditCards.map((card) => (
-              <div key={card.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+              <div 
+                key={card.id} 
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors"
+                onClick={() => handleCardClick(card)}
+              >
                 <div className="flex items-center space-x-4">
                   <div className={`w-12 h-8 ${card.color} rounded flex items-center justify-center`}>
                     <span className="text-white text-xs font-bold">
